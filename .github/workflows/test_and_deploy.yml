@@ -114,6 +114,13 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: nle_dist
+   - name: Install from sdist
+      run: |
+        ls -F dist/
+        ls dist/
+        ls -al .
+        ls -al dist/
+        pwd
     # NOTE: we assume that dist/ contains a built sdist (and only that).
     #       Yes, we could be more defensively, but What Could Go Wrong?™
     - name: Publish package to PyPI
