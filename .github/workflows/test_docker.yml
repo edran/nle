@@ -29,8 +29,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle-bionic
         dockerfile: docker/Dockerfile-bionic
-        tags:
-          - dev
+        tags: dev
         tag_with_sha: true
         add_git_labels: true
     - name: Check version matches release tag
@@ -62,8 +61,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle
         dockerfile: docker/Dockerfile
-        tags:
-          - dev
+        tags: dev
         tag_with_sha: true
         add_git_labels: true
     - name: Check version matches release tag
@@ -80,8 +78,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle
         dockerfile: docker/Dockerfile
-        tags:
-          - ${{ github.event.release.tag_name }}
-          - stable
+        tags: ${{ github.event.release.tag_name }},stable
         add_git_labels: true
 ...
