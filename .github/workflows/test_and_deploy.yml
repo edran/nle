@@ -103,7 +103,7 @@ jobs:
   deploy_sdist:
     name: Deploy sdist to pypi
     needs: test_sdist
-    if: github.event_name == "release" && github.event.action == "created"
+    if: github.event_name == 'release' && github.event.action == 'created'
     runs-on: macos-latest
     steps:
     - name: Clone repo
