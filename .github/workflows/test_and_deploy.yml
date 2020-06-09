@@ -109,7 +109,12 @@ jobs:
     - name: Clone repo
       uses: actions/checkout@v2
     - name: Check version matches release tag
-      run: "[[ \"{ github.event.release.tag_name }\" == \"v`cat version.txt`\" ]]"
+      run: |
+        echo "v$(cat version.txt)"
+        echo "{ github.event.release.tag_name }"
+        echo $([[ "{ github.event.release.tag_name }" == "v$(cat version.txt)" ]])
+        [[ "{ github.event.release.tag_name }" == "v$(cat version.txt)"]]
+
     - name: Get dist artifacts from test_sdist
       uses: actions/download-artifact@v2
       with:
