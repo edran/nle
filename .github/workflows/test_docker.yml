@@ -46,8 +46,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle-bionic
         dockerfile: docker/Dockerfile-bionic
-        tags:
-          - ${{ github.event.release.tag_name }}
+        tags: ${{ github.event.release.tag_name }}
         add_git_labels: true
 
   xenial:
