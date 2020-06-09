@@ -19,9 +19,10 @@ on:
 
 jobs:
   bionic:
-    name: Build and publish image
+    name: Build and publish bionic image
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Build and push bionic image
       uses: docker/build-push-action@v1
       with:
@@ -50,16 +51,17 @@ jobs:
         add_git_labels: true
 
   xenial:
-    name: Build and publish image
+    name: Build and publish xenial image
     runs-on: ubuntu-latest
     steps:
-    - name: Build and push bionic image
+    - uses: actions/checkout@v2
+    - name: Build and push image
       uses: docker/build-push-action@v1
       with:
         username: edran
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle
-        dockerfile: docker/Dockerfile
+        dockerfile: nle/docker/Dockerfile
         tags: dev
         tag_with_sha: true
         add_git_labels: true
