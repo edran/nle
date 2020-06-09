@@ -32,8 +32,7 @@ jobs:
         brew install zeromq flatbuffers
         sudo wget https://raw.githubusercontent.com/zeromq/cppzmq/v4.3.0/zmq.hpp -P \
           /usr/local/include
-    - name: Clone repo
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Install from repo in test mode
       run: "pip install -e '.[dev]'"
     - name: Run tests
@@ -65,8 +64,7 @@ jobs:
         brew install zeromq flatbuffers
         sudo wget https://raw.githubusercontent.com/zeromq/cppzmq/v4.3.0/zmq.hpp -P \
           /usr/local/include
-    - name: Clone repo
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Generate sdist
       run: |
        NLE_RELEASE_BUILD=1 python setup.py sdist
@@ -106,15 +104,12 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'released'
     runs-on: macos-latest
     steps:
-    - name: Clone repo
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
     - name: Check version matches release tag
       run: |
         echo "v$(cat version.txt)"
         echo "${{ github.event.release.tag_name }}"
-        echo $([[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]])
-        [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)"]]
-
+        [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
     - name: Get dist artifacts from test_sdist
       uses: actions/download-artifact@v2
       with:
