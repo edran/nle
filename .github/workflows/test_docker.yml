@@ -61,7 +61,7 @@ jobs:
         username: edran
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         repository: edran/nle
-        dockerfile: nle/docker/Dockerfile
+        dockerfile: docker/Dockerfile
         tags: dev
         tag_with_sha: true
         add_git_labels: true

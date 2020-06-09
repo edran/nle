@@ -127,7 +127,7 @@ jobs:
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
-        user: edran
+        user: __token__
         password: ${{ secrets.PYPI_TOKEN }}
         # TODO: remove this before merging PR into fr/nle:master
         repository_url: https://test.pypi.org/legacy/
