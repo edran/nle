@@ -51,7 +51,7 @@ jobs:
 
   test_sdist:
     name: Test sdist on MacOS w/ Py3.8
-    needs: test_repo
+    # needs: test_repo
     runs-on: macos-latest
     steps:
     - name: Setup Python 3.8 env
@@ -111,9 +111,9 @@ jobs:
     - name: Check version matches release tag
       run: |
         echo "v$(cat version.txt)"
-        echo "{ github.event.release.tag_name }"
-        echo $([[ "{ github.event.release.tag_name }" == "v$(cat version.txt)" ]])
-        [[ "{ github.event.release.tag_name }" == "v$(cat version.txt)"]]
+        echo "${{ github.event.release.tag_name }}"
+        echo $([[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]])
+        [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)"]]
 
     - name: Get dist artifacts from test_sdist
       uses: actions/download-artifact@v2
