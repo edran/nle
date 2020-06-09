@@ -18,61 +18,70 @@ on:
     types: [released]
 
 jobs:
-  build_bionic:
-    name: Build bionic image
+  bionic:
+    name: Build and publish image
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build image
-      run: |
-        SHORT_SHA=$(git rev-parse --short=7 ${{ github.sha }})
-        docker build -f docker/Dockerfile-bionic . -t edran/nle:commit-bionic-$SHORT_SHA
-    - name: Deploy image
-      run: |
-        SHORT_SHA=$(git rev-parse --short=7 ${{ github.sha }})
-        docker tag edran/nle:commit-bionic-$SHORT_SHA edran/nle:dev-bionic
-        docker push edran/nle:dev-bionic
-        docker push edran/nle:commit-bionic-$SHORT_SHA
+    - name: Build and push bionic image
+      uses: docker/build-push-action@v1
+      with:
+        username: edran
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: edran/nle-bionic
+        dockerfile: docker/Dockerfile-bionic
+        tags:
+          - dev
+        tag_with_sha: true
+        add_git_labels: true
     - name: Check version matches release tag
       if: github.event_name == 'release' && github.event.action == 'released'
       run: |
         echo "v$(cat version.txt)"
-        echo "{ github.event.release.tag_name }"
-        echo $([[ "{ github.event.release.tag_name }" == "v$(cat version.txt)" ]])
-        [[ "{ github.event.release.tag_name }" == "v$(cat version.txt)"]]
-    - name: Deploy new version tag
+        echo "${{ github.event.release.tag_name }}"
+        [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
+    - name: Push version tag
       if: github.event_name == 'release' && github.event.action == 'released'
-      run: |
-        docker tag edran/nle:dev-bionic edran/nle:{ github.event.release.tag_name }-bionic
-        docker push edran/nle:{ github.event.release.tag_name }-bionic
+      uses: docker/build-push-action@v1
+      with:
+        username: edran
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: edran/nle-bionic
+        dockerfile: docker/Dockerfile-bionic
+        tags:
+          - ${{ github.event.release.tag_name }}
+        add_git_labels: true
 
-  build_xenial:
-    name: Build xenial image
+  xenial:
+    name: Build and publish image
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build image
-      run: |
-        SHORT_SHA=$(git rev-parse --short=7 ${{ github.sha }})
-        docker build -f docker/Dockerfile-xenial . -t edran/nle:commit-xenial-$SHORT_SHA
-    - name: Deploy image
-      run: |
-        SHORT_SHA=$(git rev-parse --short=7 ${{ github.sha }})
-        docker tag edran/nle:commit-xenial-$SHORT_SHA edran/nle:dev-xenial
-        docker push edran/nle:dev-xenial
-        docker push edran/nle:commit-xenial-$SHORT_SHA
+    - name: Build and push bionic image
+      uses: docker/build-push-action@v1
+      with:
+        username: edran
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: edran/nle
+        dockerfile: docker/Dockerfile
+        tags:
+          - dev
+        tag_with_sha: true
+        add_git_labels: true
     - name: Check version matches release tag
       if: github.event_name == 'release' && github.event.action == 'released'
       run: |
         echo "v$(cat version.txt)"
-        echo "{ github.event.release.tag_name }"
-        echo $([[ "{ github.event.release.tag_name }" == "v$(cat version.txt)" ]])
-        [[ "{ github.event.release.tag_name }" == "v$(cat version.txt)"]]
-    - name: Deploy new version tag
+        echo "${{ github.event.release.tag_name }}"
+        [[ "${{ github.event.release.tag_name }}" == "v$(cat version.txt)" ]]
+    - name: Build version and stable tag
       if: github.event_name == 'release' && github.event.action == 'released'
-      run: |
-        docker tag edran/nle:dev-xenial edran/nle:{ github.event.release.tag_name }-xenial
-        docker tag edran/nle:dev-xenial edran/nle:stable
-        docker push edran/nle:{ github.event.release.tag_name }-xenial
-        docker push edran/nle:stable
+      uses: docker/build-push-action@v1
+      with:
+        username: edran
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        repository: edran/nle
+        dockerfile: docker/Dockerfile
+        tags:
+          - ${{ github.event.release.tag_name }}
+          - stable
+        add_git_labels: true
 ...
