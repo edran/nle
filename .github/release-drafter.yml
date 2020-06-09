@@ -16,7 +16,7 @@ exclude-labels:
   - 'skip changelog'
 change-template: '- $TITLE (#$NUMBER, @$AUTHOR)'
 template: |
-  # installing NLE
+  # Installing NLE
 
   Install with pip: `pip install nle==$NEXT_PATCH_VERSION`
 
