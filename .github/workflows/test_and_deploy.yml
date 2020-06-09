@@ -1,15 +1,15 @@
 ---
-name: Test & Deploy
+name: Test & deploy on MacOS
 
 on:
   push:
     branches:
       - master
-  release:
-    types: [released]
   pull_request:
   schedule:
     - cron: "0 6,18 * * *"
+  release:
+    types: [released]
 
 
 jobs:
@@ -103,7 +103,7 @@ jobs:
   deploy_sdist:
     name: Deploy sdist to pypi
     needs: test_sdist
-    if: github.event_name == 'release' && github.event.action == 'created'
+    if: github.event_name == 'release' && github.event.action == 'released'
     runs-on: macos-latest
     steps:
     - name: Clone repo
